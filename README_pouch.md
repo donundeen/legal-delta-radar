@@ -1,4 +1,4 @@
-# [PouchDB Express Server](https://pouchdb.com/)
+# [PouchDB Express Server](https://pouchdb.com/) v2
 
 **_Zero to PouchDB Express Server in less than a minute._** 
 
