@@ -8,7 +8,7 @@ module.exports = function(passport, db) {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "https://delta-pouchdb.glitch.me/auth/google/callback"
+        callbackURL: process.env.passport_callback_url
       },
       function(accessToken, refreshToken, profile, cb) {
         console.log("in auth function");
