@@ -1,0 +1,206 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: arial, sans-serif;
+  margin: 2em;
+}
+
+h1 {
+  font-style: italic;
+  color: #373fff;
+}
+
+div {
+/*  border: 1px solid green;*/
+  border-radius: 5px;
+}
+
+
+/*
+.selected {
+  background-color: lightblue;
+  font-weight: bold;
+}
+*/
+
+.delta_svg {
+  position: relative;
+  margin: auto;
+}
+
+#radar {
+  position: relative; 
+  height:80vh; 
+  width:80vw;
+/*  border: 3px solid orange;*/
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#delta {
+  position: relative;
+}
+
+#svg {
+  display: block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+/*  border: 1px solid red;*/
+}
+
+.delta_side {
+  width: 50%;
+}
+
+.flowing {
+  font-size: 18px;
+}
+
+.delta_side.people {
+  text-align: right;
+  position: absolute;
+  top: 20px;
+  right: 10px;
+}
+
+.delta_side.process {
+    text-align: left;
+  position: absolute;
+  top: 20px;
+  left: 10px;
+}
+
+.delta_side.practice {
+  text-align: center;
+  position: relative;
+  top: -20px;
+  margin-left: auto;
+  margin-right: auto;
+ /* position: absolute;
+  top: 50px;
+  left: 10px;*/
+}
+
+
+
+
+/* the headers for teh accordion */
+.card-header button {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+  font-size: 1em;
+}
+
+.card-header {
+  background-color: #183760;
+  color: #ffffff;
+}
+
+.disabled .card-header {
+  background-color: grey;
+}
+
+
+
+#gapAccordion .card-header button {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    font-size: .6em;
+}
+
+#gapAccordion  .card-header {
+  background-color: lightblue;
+}
+
+
+/*
+.btn-link {
+  color: white;
+  background-color: #183760;
+}
+
+.collapsed {
+  background-color: white;
+  color: #183760;
+}
+*/
+
+
+.card {
+  background-color: white;
+  color: #183760;
+}
+.card > .card-header{
+  background-color: white;
+  color: #183760;
+}
+
+.card .btn-link{
+  background-color: white;
+  color: #183760;
+}
+
+.collapsedcard {
+  background-color: white;
+  color: #183760;
+}
+
+.collapsedcard > .card-header{
+  background-color: white;
+  color: #183760;
+}
+
+.collapsedcard .btn-link{
+  background-color: white;
+  color: #183760;
+}
+
+.titlecard {
+  color: white;
+  background-color: #183760;
+  
+}
+
+.titlecard .btn-link{
+  color: white;
+  background-color: #183760;
+
+}
+
+.titlecard .card-header{
+  color: white;
+  background-color: #183760;
+
+}
+
+#radar {
+  background-color: white;
+  color: #183760;
+  
+}
+
+.radarcardbody {
+  background-color: white;
+  color: #183760;
+  
+}
+
+#careerPathChoose{
+  text-align: center;
+}
+
+.assessmentInstructions {
+  font-size: 1.2em;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 15px;
+}
+
+.card-subtitle{
+  font-size: 1.2em;
+}

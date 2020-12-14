@@ -1,0 +1,18 @@
+{
+  "couchdb": {
+    "uuid": "5e9237dc-bd5c-4375-87e7-15e01bbfabbe"
+  },
+  "cors": {
+    "credentials": true,
+    "headers": "accept, authorization, content-type, origin, referer, x-csrf-token, access-control-allow-origin",
+    "origins": "https://glitch-integration-test.glitch.me,http://glitch-integration-test.glitch.me",
+    "methods": "GET, PUT, POST, HEAD, DELETE, OPTIONS"
+  },
+  "httpd": {
+    "enable_cors": true
+  },
+  "admins": {
+    "don": "-pbkdf2-a42f04532f9ae1fe09c2ea03e44bb1e704702d2c,10714a1831eb1cb1ba1d81591521281b813b18f105168175,10",
+    "deltaadmin": "-pbkdf2-6c4443083a30c08c4e34fe600f32f33eba0f7bfe,1911b619a1a81e01a211719110416a1001631d5171151106,10"
+  }
+}
