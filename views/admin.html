@@ -39,33 +39,43 @@
     <script>
       let userId = "{{user._id}}";
     </script>
-    admin page
+    <h1>
+      admin page
+    </h1>
     <br />
-    {% if user %} Hello {{user.displayName}} {% if user.role === "admin" or
-    user.role==="superadmin" %} | <a href="/app/admin.html">Admin Page</a> {%
-    endif %} {% if user.role === "superadmin" %} |
-    <a href="/app/superadmin.html">Super Admin Page</a> {% endif %} | Click here
-    to <a href="/logout">logout</a>
+    {% if user %} Hello {{user.displayName}} ({{user._id}}) {% if user.role ===
+    "admin" or user.role==="superadmin" %} |
+    <a href="admin.html">Admin Page</a> {% endif %} {% if user.role ===
+    "superadmin" %} | <a href="superadmin.html">Super Admin Page</a> {% endif %}
+    | Click here to
+    <a href="/logout">logout</a>
     {% else %}
     <a href="/auth/google">login with google</a>
     {% endif %}
 
+    <br />
+
     <template id="orgtemplate">
       <div class="org">
-        Org Name: <span class="orgName"></span><br />
-        <div class="careerPaths"></div>
+        <h2>Organization Name: <span class="orgName"></span></h2>
+        <h3>
+          Career Paths:
+        </h3>
+        <ul class="careerPaths"></ul>
         <div class="newCareerPath">
-          <input type="text" size="40" placeholder="enter new career path" />
-          <button class="newcareerpath">
+          <input type="text" class="newcareerpath" size="40" placeholder="enter new career path" />
+          <button class="newcareerpathsubmit">
             submit
           </button>
         </div>
-      </div>
-      <div class="skillGroupsContainer">
-        <span>Skill Groups</span>
-        <div class="skillGroups"></div>
+        <div class="skillGroupsContainer">
+          <span>Skill Groups</span>
+          <div class="skillGroups"></div>
+        </div>
+        <hr />
       </div>
     </template>
+
     <template id="careerPath">
       <div class="careerPath">
         <span class="careerPathName"></span>
