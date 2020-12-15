@@ -36,9 +36,11 @@
     <!-- import the webpage's javascript file -->
   </head>
   <body>
-    super admin page
+    <h1>
+     super admin page 
+    </h1>
     <br />
-    {% if user %} Hello {{user.displayName}} {% if user.role === "admin" or
+    {% if user %} Hello {{user.displayName}} ({{user._id}}) {% if user.role === "admin" or
     user.role==="superadmin" %} | <a href="admin.html">Admin Page</a> {% endif
     %} {% if user.role === "superadmin" %} |
     <a href="superadmin.html">Super Admin Page</a> {% endif %} | Click here to

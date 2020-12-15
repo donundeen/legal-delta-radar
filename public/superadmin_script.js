@@ -25,7 +25,7 @@ $(document).ready(function() {
     $(users).each((index, user) => {
       console.log("appending option");
       let row = $(
-        "<option value='" + user._id + "'>" + user.displayName + "<option>"
+        "<option value='" + user._id + "'>" + user.displayName + "("+user._id +")<option>"
       );
       $(".adminSelect").append(row);
     });
