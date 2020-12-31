@@ -55,54 +55,67 @@
 
     <br />
 
-
-    <div id="orgContainer" class="accordion"></div>
-
-    <template id="orgtemplate">
-      <div class="org card">
+    <div class="accordion" id="adminAccordion">
+      <div class="card">
         <div class="card-header" id="headingOne">
           <h2 class="mb-0">
             <button
-              class="btn btn-link btn-block text-center needsdynamicdatatarget needsdynamicariacontrols"
+              class="btn btn-link btn-block text-center"
               type="button"
               data-toggle="collapse"
               data-target="#collapseOne"
               aria-expanded="true"
               aria-controls="collapseOne"
             >
-              <h2>Organization Name: <span class="orgName"></span></h2>
+              Ideal/Chosen Career Path
             </button>
           </h2>
         </div>
+
         <div
           id="collapseOne"
-          class="collapse  needsdynamicid"
+          class="collapse show"
           aria-labelledby="headingOne"
-          data-parent="#orgContainer"
+          data-parent="#accordionExample"
         >
           <div class="card-body">
-            <h3>
-              Career Paths:
-            </h3>
-            <ul class="careerPaths"></ul>
-            <div class="newCareerPath">
-              <input
-                type="text"
-                class="newcareerpath"
-                size="40"
-                placeholder="enter new career path"
-              />
-              <button class="newcareerpathsubmit">
-                submit
-              </button>
+            <div id="careerPathChoose">
+              <select id="careerPathSelect">
+                <option value="">Select Career Path...</option>
+              </select>
             </div>
-            <div class="skillGroupsContainer">
-              <h3>Skill Groups:</h3>
-              <div class="skillGroups"></div>
-            </div>
-            <hr />
           </div>
         </div>
+      </div>
+    </div>
+    
+    
+
+    <div id="orgContainer" class="accordion"></div>
+
+    <template id="orgtemplate">
+      <div class="org card">
+        <h2>Organization Name: <span class="orgName"></span></h2>
+        <h3>
+          Career Paths:
+        </h3>
+        <ul class="careerPaths"></ul>
+        <div class="newCareerPath">
+          <input
+            type="text"
+            class="newcareerpath"
+            size="40"
+            placeholder="enter new career path"
+          />
+          <button class="newcareerpathsubmit">
+            submit
+          </button>
+        </div>
+        <div class="skillGroupsContainer">
+          <h3>Skill Groups:</h3>
+          <div class="skillGroups"></div>
+        </div>
+        <hr />
       </div>
     </template>
 
