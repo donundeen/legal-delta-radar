@@ -39,7 +39,7 @@
     {% if user %}
     Hello {{user.displayName}}
     {% if user.role === "admin" or user.role==="superadmin" %}
-    | <a href="/app/admin.html">Admin Page</a>
+    | <a href="/app/editor.html">Admin Page</a>
     {% endif %}
     {% if user.role === "superadmin" %}
      | <a href="/app/superadmin.html">Super Admin Page</a>

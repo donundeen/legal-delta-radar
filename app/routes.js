@@ -25,6 +25,11 @@ module.exports = function(app, passport, db) {
   app.get("/app/admin.html", (request, response) => {
     response.render(__dirname + "/../views/admin.html", { user: request.user });
   });
+  app.get("/app/editor.html", (request, response) => {
+    response.render(__dirname + "/../views/editor.html", {
+      user: request.user
+    });
+  });
 
   app.get("/app/superadmin.html", (request, response) => {
     /*
@@ -114,17 +119,18 @@ app.get("/dreams", (request, response) => {
     let options = { include_docs: true };
     console.log("Getting org for user");
     let userId = req.query.userId;
-    if(!userId){
+    if (!userId) {
       res.send({});
       return;
     }
-    
-    
+
     db.allDocs(options)
       .then(function(result) {
         // handle result
         console.log("got all docs");
-        let orgs = result.rows.filter(row => row.doc.type === "org" && row.doc.admin.id === userId);
+        let orgs = result.rows.filter(
+          row => row.doc.type === "org" && row.doc.admin.id === userId
+        );
         orgs = orgs.map(org => org.doc);
         console.log("got orgs");
         console.log(orgs);
