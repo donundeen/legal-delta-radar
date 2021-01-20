@@ -22,6 +22,21 @@ module.exports = function(db) {
       role: "user" // user, admin, superadmin
     },
 
+
+    update: function(id, user, callback) {
+      db.put(user)
+        .then(function(response) {
+          if (callback) {
+            callback(response);
+          }
+          // handle response
+        })
+        .catch(function(err) {
+          console.log("error in updating" + err);
+        });
+    },    
+    
+    
     findOrCreate: function(id, user, callback) {
       console.log("in findOrCreate: " + id);
       user = {...this.addonData, ...user};

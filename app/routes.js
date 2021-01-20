@@ -40,6 +40,12 @@ module.exports = function(app, passport, db) {
     });
   });
 
+  app.get("/app/index.html", (request, response) => {
+    console.log(request.user);
+    response.render(__dirname + "/../views/index.html", { user: request.user });
+  });  
+  
+  
   // https://expressjs.com/en/starter/basic-routing.html
   app.get("/app", (request, response) => {
     console.log(request.user);
@@ -65,6 +71,19 @@ app.get("/dreams", (request, response) => {
     console.log(req.user);
     //    console.log(req.session);
     res.send("POST request returned to the homepage");
+  });
+  
+  app.post("/user", function(req, res){
+    var UserModel = require("./../app/models/user.js")(db);
+    if (req.body._id) {
+      console.log("updating");
+      // then update existing record
+      UserModel.update(req.body._id, req.body, function(result) {
+        res.send(result);
+      });
+    } else {
+        res.send("no user with id"+ req.body._id +" to update");
+    }    
   });
 
   app.get("/orgs", function(req, res) {

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Don Undeen. Culture, Tech, Makerspaces</title>
+    <!-- in case you forget, this site is hosted on hostinger -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Arvo:400,700|Droid+Sans:400,700|Droid+Serif:400,700|Arimo:400,700,700italic,400italic|Montserrat:400,700|Raleway:400,400italic,900|Merriweather:400,900,400italic|Passion+One:400,900|Poiret+One|Candal|Lobster|Josefin+Sans|Quicksand|Orbitron:400,700,900,500"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link rel="stylesheet" href="css/animation.css" media="screen" />
+    <link rel="stylesheet" href="css/main_masonry.css" media="screen" />
+    <script src="https://code.jquery.com/jquery-1.12.2.min.js"></script>
+    <script src="https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/FitText.js/1.2.0/jquery.fittext.min.js"
+      integrity="sha512-e2WVdoOGqKU97DHH6tYamn+eAwLDpyHKqPy4uSv0aGlwDXZKGwyS27sfiIUT8gpZ88/Lr4UZpbRt93QkGRgpug=="
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      $(document).ready(function() {
+        //jQuery(".fitted").fitText();
+
+        var $grid = $(".grid").masonry({
+          // options
+
+          itemSelector: ".grid-item",
+          columnWidth: 240,
+          gutter: 20,
+          transitionDuration: "1.0s"
+        });
+
+        jQuery(".fitted").fitText();
+
+        /*
+    $grid.imagesLoaded().progress( function() {
+    $grid.masonry('layout');
+  });
+  */
+
+        $(".grid-item .item_header").click(function() {
+          if (
+            $(this)
+              .parent()
+              .hasClass("maxed")
+          ) {
+            $(this)
+              .parent()
+              .removeClass("maxed");
+          } else {
+            $(".maxed").toggleClass("maxed");
+            $(this)
+              .parent()
+              .addClass("maxed");
+          }
+
+          //$(this).parent().toggleClass("maxed");
+          (function(_this, _grid) {
+            _grid.on("layoutComplete", function() {
+              $("html, body").animate(
+                {
+                  scrollTop: $(_this).offset().top - 20
+                },
+                1000
+              );
+              _grid.off("layoutComplete");
+            });
+          })(this, $grid);
+
+          $grid.masonry("layout");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="site_container">
+      <div class="grid">
+        <div class="grid-sizer"></div>
+        <div class="gutter-sizer"></div>
+
+        <div class="grid-item gridheader">
+          <div class="header">
+            <span class="supheader">Don Undeen</span>
+            <br />
+            <div class="subheader">
+              <span class="subheader">Culture, Tech, Makerspaces</span>
+            </div>
+          </div>
+          <div class="logo">
+            <img
+              class="logo_img"
+              align="right"
+              src="images/logo.png"
+              height="100px"
+            />
+          </div>
+        </div>
+        <div class="grid-item grid6">
+          <div class="item_header">
+            About
+          </div>
+          <div class="item_summary">
+            <img
+              height="175"
+              src="images/square_headshot.jpg"
+              align="left"
+              style="border-radius: 10px; padding-right:10px;"
+            />
+            <p style="padding-right: 10px; margin-top: -25px;">
+              <i
+                >Makerspace builder, innovation consultant, new media artist,
+                educator. Manager of the Maker Hub, Georgetown University's
+                makerspace. Former Founding and Senior Manager of the MediaLab
+                at the Metropolitan Museum of Art.</i
+              >
+            </p>
+          </div>
+          <div class="item_content">
+            <p style="padding-right: 10px; margin-top:-10px;">
+              <img
+                height="175"
+                src="images/square_headshot.jpg"
+                align="left"
+                style="border-radius: 10px; padding-right:10px;"
+              /><br />
+              Hi! I get up to all sorts of trouble, but in a nutshell I do
+              creative and help others do creative.
+              <br /><br />
+              I'm the Founding Manager of the
+              <b
+                ><a href="//library.georgetown.edu/makerhub"
+                  >Maker Hub at Georgetown University</a
+                ></b
+              >.<br />
+              <br />
+              I was the Founding and Senior Manager of the
+              <b
+                ><a
+                  href="//www.metmuseum.org/blogs/listing?facettype=tag&facetname=MediaLab"
+                  >MediaLab at the Metropolitan Museum of Art</a
+                ></b
+              >. In 2012 I was tasked with establishing a space for
+              experimentation at the intersection of art, technology, and the
+              museum experience. By working closely with NYC's creative
+              technology community, the MediaLab developed a worldwide
+              reputation for consistently delivering provocative, exciting, and
+              valuable projects. <br /><br />
+              Lessee, what else... I've traveled around the world, consulting
+              with museums, universities, governments, and religious
+              organizations on how to develop space for creativity and
+              innovation. I advise entrepreneurs and students on project
+              development. I serve as technical lead for cultural projects. I
+              help multimedia artists develop new works. I create digital art
+              systems and use them to perform my own compositions. I design and
+              create art objects using digital fabrication and vintage tech.
+              <br /><br />
+              I like people, experiences, AND things.
+            </p>
+            <p>
+              <strong>Here's a better Bio for publication:</strong>
+              <em
+                >Don Undeen (UF Computer Science 2003 ) is the Founding Manager
+                of the Maker Hub at Georgetown University, and Adjunct Professor
+                of creative technology courses in Georgetown’s Communications,
+                Culture, and Technology graduate program. Prior to his work at
+                Georgetown, Don was the founder and Senior Manager of the Media
+                Lab at the Metropolitan Museum of Art, an incubator for
+                experiments at the intersection of art, technology, and the
+                museum experience. A lifelong lover of creative technology and
+                the communities that practice it, Don has consulted with
+                businesses, non-profits, museums, governments, and religious
+                institutions around the world, helping complex organizations
+                develop spaces for innovation.
+              </em>
+            </p>
+          </div>
+          <div class="item_footer">
+            Contact: donundeen@gmail.com
+          </div>
+        </div>
+
+        <div class="grid-item grid5 teach">
+          <div class="item_header qtr fitted">
+            35mm Slide Projector
+          </div>
+          <div class="item_summary">brief teaser here</div>
+          <div class="item_content">
+            description here
+            <div class="content_segment">
+              images and content
+            </div>
+            <div class="content_segment">
+              images and content
+            </div>
+          </div>
+        </div>
+        <div class="grid-item grid5 teach ">
+          <div class="item_header fitted qtr">
+            35mm Slide Micro-Museum
+          </div>
+          <div class="item_summary">brief teaser here</div>
+          <div class="item_content">
+            description here
+            <div class="content_segment">
+              images and content
+            </div>
+            <div class="content_segment">
+              images and content
+            </div>
+          </div>
+        </div>
+        <div class="grid-item grid6 teach ">
+          <div class="item_header qtr fitted ">
+            Georgetown University Maker Hub
+          </div>
+          <div class="item_summary"></div>
+          <div class="item_content">
+            description here
+            <div class="content_segment">
+              images and content
+            </div>
+            <div class="content_segment">
+              images and content
+            </div>
+          </div>
+        </div>
+        <div class="grid-item grid5 teach">
+          <div class="item_header  fitted ">
+            Vagina Chorus
+          </div>
+          <div class="item_summary">brief teaser here</div>
+          <div class="item_content">
+            description here
+            <div class="content_segment">
+              images and content
+            </div>
+            <div class="content_segment">
+              images and content
+            </div>
+          </div>
+        </div>
+        <div class="grid-item grid5 teach">
+          <div class="item_header qtr fitted">
+            QR Code Watch Face
+          </div>
+          <div class="item_summary"></div>
+          <div class="item_content">
+            description here
+            <div class="content_segment">
+              images and content
+            </div>
+            <div class="content_segment">
+              images and content
+            </div>
+          </div>
+        </div>
+        <div class="grid-item grid5 teach">
+          <div class="item_header qtr  fitted">
+            35mm Art Slide Lamps
+          </div>
+          <div class="item_summary">brief teaser here</div>
+          <div class="item_content">
+            description here
+            <div class="content_segment">
+              images and content
+            </div>
+            <div class="content_segment">
+              images and content
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

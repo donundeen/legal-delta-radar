@@ -1,5 +1,12 @@
+/*
+we're using this json editor:
+https://github.com/json-editor/json-editor
+*/
+
 $(document).ready(function() {
   var orgs_data = {};
+
+  let initted = false;
 
   var schema = {
     type: "object",
@@ -198,6 +205,8 @@ $(document).ready(function() {
     });
   }
 
+  let prevdata = {};
+
   function setupEditor() {
     console.log("setting up editors");
 
@@ -210,16 +219,44 @@ $(document).ready(function() {
       let element = $("<div class='orddata_editor'></div>");
       $("#editors").append(element);
 
+      editor_options.startval = org_data;
+
       let editor = new JSONEditor($(element)[0], editor_options);
+      console.log("editor created");
+      console.log(editor);
 
-      // can set entire document here
-      //      editor.setValue({ FullName: "John Smith "+ index });
-      editor.setValue(org_data);
-
-      editor.on("change", () => {
-        // Do something
-        console.log("editor values changed");
+      editor.on("change", function() {
+        editorChanged(editor, index);
       });
+    });
+  }
+
+  function editorChanged(editor, index) {
+    // Do something
+    console.log("editor values changed ");
+    let orgdata = editor.getValue();
+    if (prevdata[index] && !deepEqual(orgdata, prevdata[index])) {
+      prevdata[index] = orgdata;
+      let reveditor = editor.getEditor("root._rev");
+      saveOrg(orgdata, reveditor, function() {});
+    } else {
+      prevdata[index] = orgdata;
+    }
+  }
+
+  function saveOrg(org, reveditor, callback) {
+    console.log("saving");
+    $.post("/org", org, function(response, status) {
+      console.log("new org data posted");
+      console.log(response);
+      let rev = response.rev;
+      org._rev = rev;
+      reveditor.setValue(rev);
+
+      console.log(status);
+      if (callback) {
+        callback();
+      }
     });
   }
 
@@ -239,5 +276,36 @@ $(document).ready(function() {
         competency.careerPathAlignmentArray = careerPathAlignmentArray;
       });
     });
+  }
+
+  function deepEqual(object1, object2) {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+
+    for (const key of keys1) {
+      if (key === "_rev") {
+        continue;
+      }
+      const val1 = object1[key];
+      const val2 = object2[key];
+      const areObjects = isObject(val1) && isObject(val2);
+      if (
+        (areObjects && !deepEqual(val1, val2)) ||
+        (!areObjects && val1 !== val2)
+      ) {
+        console.log(key + " : " + val1 + " : " + val2);
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function isObject(object) {
+    return object != null && typeof object === "object";
   }
 });

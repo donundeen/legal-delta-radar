@@ -37,13 +37,14 @@
   </head>
   <body>
     <h1>
-     super admin page 
+      Super Admin Page
     </h1>
     <br />
-    {% if user %} Hello {{user.displayName}} ({{user._id}}) {% if user.role === "admin" or
-    user.role==="superadmin" %} | <a href="admin.html">Admin Page</a> {% endif
-    %} {% if user.role === "superadmin" %} |
-    <a href="superadmin.html">Super Admin Page</a> {% endif %} | Click here to
+    {% if user %} Hello {{user.displayName}} ({{user._id}}) {% if user.role ===
+    "admin" or user.role==="superadmin" %} |
+    <a href="editor.html">Admin Page</a> {% endif %} {% if user.role ===
+    "superadmin" %} | <a href="index.html">DeltaPage</a> {% endif %} | Click
+    here to
     <a href="/logout">logout</a>
     {% else %}
     <a href="/auth/google">login with google</a>
@@ -51,22 +52,47 @@
 
     <br />
 
-    New Org Name???:
-    <input class="neworgname" type="text" size="40" />
+    <h2>
+      Create a new Org:
+    </h2>
+    <label for="neworgname">Org Name:</label>
+    <input id="neworgname" class="neworgname" type="text" size="40" />
     <button class="addorg">
       Add Organization
     </button>
 
     <template id="orgInList">
-      <li>
-        <span data-text="name"></span>(<span class="deleteorg">Delete</span>)
-        Admin: <span class="adminName"></span>
-        <span class="selectAdmin"><select class="adminSelect">
-          <option value="">Set Admin</option>
-          </select></span><span class="setAdmin">Set to Admin</span>
-      </li>
+      <div class="orgdiv">
+        <h2 data-text="name"></h2>
+        Current Admin is: <span class="adminName"></span><br />
+        <span class="selectAdmin">
+          <select class="adminSelect">
+            <option value="">Set Admin</option>
+          </select></span>
+        <button class="setAdmin">Set to Admin</button>
+        <br/>
+        <div class="orgusers">
+          <h3>
+            Members:
+          </h3>
+          <ul class="orguserslist">
+            
+          </ul>
+          <h3>
+            Add Member:
+          </h3>
+          <select class="addUser">
+            <option value="">Select Member to Add:</option>
+          </select>
+          <button class="addUserButton">Add Member</button>
+        </div>
+        
+        
+        <button class="deleteorg">Delete This Org</button><br />
+      </div>
     </template>
-    <ul class="useTemplate orgList" data-row-template="orgInList"></ul>
+
+    <div class="useTemplate orgList" data-row-template="orgInList"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script
