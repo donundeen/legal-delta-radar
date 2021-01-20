@@ -12,7 +12,9 @@ var passport = require("passport");
 
 app.use(helmet());
 app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('body-parser').urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
+app.use(require('body-parser').json({limit: '50mb', extended: true, parameterLimit: 1000000}));
+
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(flash());
 

@@ -204,3 +204,10 @@ div {
 .card-subtitle{
   font-size: 1.2em;
 }
+
+.orgdiv{
+  border-radius: 25px;
+  background-color: lightblue;
+  padding: 10px;
+  margin: 10px;
+}
