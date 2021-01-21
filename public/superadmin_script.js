@@ -10,8 +10,7 @@ $(document).ready(function() {
   //  getUsers(populateAdminSelect);
 
   renderPage();
-  
-  
+
   function renderPage() {
     getUsers(() => {
       getOrgs(showOrgs);
@@ -92,7 +91,7 @@ $(document).ready(function() {
             user._rev = response.rev;
             console.log(allUsers);
 
-  renderPage();
+            renderPage();
           });
         });
       }
@@ -139,8 +138,13 @@ $(document).ready(function() {
 
       // listen for click to delete the org (TODO: add a confirmation popup)
       $(".deleteorg", row).click(function() {
-        console.log("deleting org" + org._id);
-        deleteOrg(org._id);
+        confirm(
+          "Are you sure you want to delete the organization " + org._id + "?",
+          function() {
+            console.log("deleting org" + org._id);
+            deleteOrg(org._id);
+          }
+        );
       });
 
       // listen for the click to create a new admin
@@ -154,7 +158,8 @@ $(document).ready(function() {
           console.log("posted");
           console.log(response);
           console.log(status);
-  renderPage();        });
+          renderPage();
+        });
       });
 
       // add a user to this org, by setting the org value for this user's record
@@ -177,7 +182,7 @@ $(document).ready(function() {
           console.log(status);
           user._rev = response.rev;
           console.log(allUsers);
-  renderPage();
+          renderPage();
         });
         return false;
       });
@@ -198,6 +203,16 @@ $(document).ready(function() {
         console.log("got result " + result);
         getOrgs(showOrgs);
       }
+    });
+  }
+
+  function confirm(message, callback) {
+    $("#modalText").text(message);
+    $("#myModal").modal("show");
+    $("#SubForm").on("click", function() {
+      $("#SubForm").off("click");
+      callback();
+      $("#myModal").modal("hide");
     });
   }
 

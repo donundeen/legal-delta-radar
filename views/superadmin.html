@@ -68,16 +68,15 @@
         <span class="selectAdmin">
           <select class="adminSelect">
             <option value="">Set Admin</option>
-          </select></span>
+          </select></span
+        >
         <button class="setAdmin">Set to Admin</button>
-        <br/>
+        <br />
         <div class="orgusers">
           <h3>
             Members:
           </h3>
-          <ul class="orguserslist">
-            
-          </ul>
+          <ul class="orguserslist"></ul>
           <h3>
             Add Member:
           </h3>
@@ -86,13 +85,46 @@
           </select>
           <button class="addUserButton">Add Member</button>
         </div>
-        
-        
-        <button class="deleteorg">Delete This Org</button><br />
+
+        <button class="deleteorg confirmfirst">Delete This Org</button><br />
       </div>
     </template>
 
     <div class="useTemplate orgList" data-row-template="orgInList"></div>
+
+    <div
+      id="myModal"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel3"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-hidden="true"
+            ></button>
+            <h3 id="myModalLabel3">You sure about this?</h3>
+          </div>
+          <div class="modal-body" id="modalText">
+            <p></p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">
+              Cancel
+            </button>
+            <button class="btn-primary btn" id="SubForm">
+              Confirm and Go Ahead!
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script
