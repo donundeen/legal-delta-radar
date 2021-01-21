@@ -36,17 +36,21 @@
     <!-- import the webpage's javascript file -->
   </head>
   <body>
+    <script>
+      let userId = "{{user._id}}";
+    </script>    
+    
     {% if user %}
     Hello {{user.displayName}}
     {% if user.role === "admin" or user.role==="superadmin" %}
-    | <a href="/app/editor.html">Admin Page</a>
+    | <a href="/app/admin.html">Admin Page</a>
     {% endif %}
     {% if user.role === "superadmin" %}
      | <a href="/app/superadmin.html">Super Admin Page</a>
     {% endif %}
     | Click here to <a href="/logout">logout</a>
     {% else %}
-    <a href="/auth/google">login with google</a>
+    <a href="/auth/google">First, login with Google</a>
     {% endif %}
     <div class="accordion" id="accordionExample">
       <div class="card titlecard">
@@ -57,6 +61,7 @@
               type="button"
               aria-expanded="false"
             >
+              Your Organization: <span class="orgName"></span><br/>
               Design Your Delta:<br />
               An Individual Growth Chart to a Thriving Life in Law
             </button>
@@ -313,7 +318,7 @@
     <script src="/dataset.js" defer></script>
     <script src="/setup.js" defer></script>
     <script src="/radar_funcs.js" defer></script>
-    <script src="/script.js" defer></script>
+    <script src="/index_script.js" defer></script>
     <script src="/db_stuff.js" defer></script>
   </body>
 </html>

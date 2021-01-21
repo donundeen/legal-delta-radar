@@ -36,91 +36,97 @@
     <!-- import the webpage's javascript file -->
   </head>
   <body>
+    <script>
+      let userId = "{{user._id}}";
+    </script>
+
     <h1>
       Super Admin Page
     </h1>
     <br />
     {% if user %} Hello {{user.displayName}} ({{user._id}}) {% if user.role ===
     "admin" or user.role==="superadmin" %} |
-    <a href="editor.html">Admin Page</a> {% endif %} {% if user.role ===
+    <a href="admin.html">Admin Page</a> {% endif %} {% if user.role ===
     "superadmin" %} | <a href="index.html">DeltaPage</a> {% endif %} | Click
     here to
     <a href="/logout">logout</a>
     {% else %}
-    <a href="/auth/google">login with google</a>
+    <a href="/auth/google">First, login with Google</a>
     {% endif %}
 
     <br />
 
-    <h2>
-      Create a new Org:
-    </h2>
-    <label for="neworgname">Org Name:</label>
-    <input id="neworgname" class="neworgname" type="text" size="40" />
-    <button class="addorg">
-      Add Organization
-    </button>
+    <div class="allcontent">
+      <h2>
+        Create a new Org:
+      </h2>
+      <label for="neworgname">Org Name:</label>
+      <input id="neworgname" class="neworgname" type="text" size="40" />
+      <button class="addorg">
+        Add Organization
+      </button>
 
-    <template id="orgInList">
-      <div class="orgdiv">
-        <h2 data-text="name"></h2>
-        Current Admin is: <span class="adminName"></span><br />
-        <span class="selectAdmin">
-          <select class="adminSelect">
-            <option value="">Set Admin</option>
-          </select></span
-        >
-        <button class="setAdmin">Set to Admin</button>
-        <br />
-        <div class="orgusers">
-          <h3>
-            Members:
-          </h3>
-          <ul class="orguserslist"></ul>
-          <h3>
-            Add Member:
-          </h3>
-          <select class="addUser">
-            <option value="">Select Member to Add:</option>
-          </select>
-          <button class="addUserButton">Add Member</button>
+      <template id="orgInList">
+        <div class="orgdiv">
+          <h2 data-text="name"></h2>
+          Current Admin is: <span class="adminName"></span><br />
+          <span class="selectAdmin">
+            <select class="adminSelect">
+              <option value="">Set Admin</option>
+            </select></span
+          >
+          <button class="setAdmin">Set to Admin</button>
+          <br />
+          <div class="orgusers">
+            <h3>
+              Members:
+            </h3>
+            <ul class="orguserslist"></ul>
+            <h3>
+              Add Member:
+            </h3>
+            <select class="addUser">
+              <option value="">Select Member to Add:</option>
+            </select>
+            <button class="addUserButton">Add Member</button>
+          </div>
+
+          <button class="deleteorg confirmfirst">Delete This Org</button><br />
         </div>
+      </template>
 
-        <button class="deleteorg confirmfirst">Delete This Org</button><br />
-      </div>
-    </template>
+      <div class="useTemplate orgList" data-row-template="orgInList"></div>
 
-    <div class="useTemplate orgList" data-row-template="orgInList"></div>
-
-    <div
-      id="myModal"
-      class="modal fade"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="myModalLabel3"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-hidden="true"
-            ></button>
-            <h3 id="myModalLabel3">You sure about this?</h3>
-          </div>
-          <div class="modal-body" id="modalText">
-            <p></p>
-          </div>
-          <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">
-              Cancel
-            </button>
-            <button class="btn-primary btn" id="SubForm">
-              Confirm and Go Ahead!
-            </button>
+      <div
+        id="myModal"
+        class="modal fade"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="myModalLabel3"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-hidden="true"
+              ></button>
+              <h3 id="myModalLabel3">You sure about this?</h3>
+            </div>
+            <div class="modal-body" id="modalText">
+              <p></p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-dismiss="modal" aria-hidden="true">
+                Cancel
+              </button>
+              <button class="btn-primary btn" id="SubForm">
+                Confirm and Go Ahead!
+              </button>
+            </div>
           </div>
         </div>
       </div>

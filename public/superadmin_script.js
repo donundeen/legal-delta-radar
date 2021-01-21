@@ -8,9 +8,14 @@ $(document).ready(function() {
   let allUsers = [];
 
   //  getUsers(populateAdminSelect);
-
-  renderPage();
-
+  if (userId && userId.trim() !== "") {
+    renderPage();
+  } else {
+    $(".allcontent").hide();
+  }
+  
+  
+  
   function renderPage() {
     getUsers(() => {
       getOrgs(showOrgs);
