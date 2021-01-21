@@ -5,10 +5,6 @@ var competencies = facets.map((facet, index) => {
 console.log(JSON.stringify(competencies));
 */
 
-var db = new PouchDB('https://delta-pouchdb.glitch.me/deltaradar');
-
-
-
 var minVal = 0;
 var maxVal = 10;
 

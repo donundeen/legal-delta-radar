@@ -85,6 +85,7 @@ app.get("/dreams", (request, response) => {
         res.send("no user with id"+ req.body._id +" to update");
     }    
   });
+  
 
   app.get("/orgs", function(req, res) {
     let options = { include_docs: true };
@@ -113,6 +114,24 @@ app.get("/dreams", (request, response) => {
       return db.remove(doc);
     });
   });
+  
+  app.get("/user", function(req, res) {
+    console.log("getting user " + req.query.id);
+    console.log(req.params);
+    db.get(req.query.id).then(function(doc) {
+      res.send(doc);
+    });
+  });  
+  
+  
+ app.get("/org", function(req, res) {
+    console.log("getting org " + req.query.id);
+    console.log(req.query);
+    db.get(req.query.id).then(function(doc) {
+      res.send(doc);
+    });
+  });    
+  
 
   app.get("/users", function(req, res) {
     let options = { include_docs: true };
@@ -133,10 +152,10 @@ app.get("/dreams", (request, response) => {
       });
   });
 
-  app.get("/orgForUser", function(req, res) {
+  app.get("/adminOrgForUser", function(req, res) {
     // get org(s) that a user is the admin of
     let options = { include_docs: true };
-    console.log("Getting org for user");
+    console.log("Getting admin org for user");
     let userId = req.query.userId;
     if (!userId) {
       res.send({});
