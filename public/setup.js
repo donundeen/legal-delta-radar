@@ -10,7 +10,6 @@ var maxVal = 10;
 
 let careerPaths = [];
 let templist = {};
-let curCareerPath = false;
 
 groups.forEach((group, index) => {
     let competencies = Object.keys(group.competencies);

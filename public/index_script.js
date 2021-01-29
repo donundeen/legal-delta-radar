@@ -3,9 +3,12 @@
 
 // prints "hi" in the browser's dev tools console
 
+let curCareerPath = false;
+
 $(document).ready(function() {
   let currentUser = false;
   let currentOrg = false;
+  let allOrgs = false;
 
   /*
   db.info().then(function(info) {
@@ -25,26 +28,34 @@ $(document).ready(function() {
     fontRatio: 30
   });
 
-  if (userId && userId.trim() !== "") {
-    setupUser(userId, function(userInfo) {
-      currentUser = userInfo;
-      let orgId = currentUser.org;
-      if (orgId && orgId.trim() !== "") {
-        setupOrg(orgId, function(orgInfo) {
-          currentOrg = orgInfo;
-          $(".orgName").text(currentOrg.name);
-          groups = currentOrg.dataset.groups;
-          careerPaths = currentOrg.dataset.careerPaths;
+  // putting everything together;
+  getOrgs(function(orgs) {
+    allOrgs = orgs;
+    createOrgSelect(orgs, handleOrgSelect);
+    if (userId && userId.trim() !== "") {
+      setupUser(userId, function(userInfo) {
+        currentUser = userInfo;
+        let orgId = currentUser.org;
+        if (orgId && orgId.trim() !== "") {
+          setupOrg(orgId, handleOrgSelect);
+        }
+      });
+    } else {
+      // if no user, then user can
+    }
+  });
 
-          populateCareerPathSelect(currentUser, currentOrg);
-          updateScoringDiv(currentUser, currentOrg);
-          updateRadar(currentUser, currentOrg);
-          updateDelta(currentUser, currentOrg);
-        });
-      }
-    });
-  } else {
-    $(".accordion").html("Looks like you're not logged in");
+  function handleOrgSelect(orgInfo) {
+    currentOrg = orgInfo;
+    console.log("org selected");
+    console.log(currentOrg);
+    $(".orgName").text(currentOrg.name);
+    groups = currentOrg.dataset.groups;
+    careerPaths = currentOrg.dataset.careerPaths;
+    populateCareerPathSelect(currentUser, currentOrg);
+    updateScoringDiv(currentUser, currentOrg);
+    updateRadar(currentUser, currentOrg);
+    updateDelta(currentUser, currentOrg);
   }
 
   // don't let disabled accordions open
@@ -72,6 +83,24 @@ $(document).ready(function() {
     .closest(".card")
     .removeClass("collapsedcard");
 });
+
+function createOrgSelect(orgs, callback) {
+  console.log("createOrgSelect");
+  console.log(orgs);
+  orgs.forEach(function(org, index) {
+    console.log(index);
+    let id = org._id;
+    let name = org.name;
+    $("#selectOrg").append("<option value='" + id + "'>" + name + "</option>");
+  });
+  $("#selectOrg").change(function() {
+    let orgid = $("#selectOrg option:selected").val();
+    let currentOrg = orgs.filter(org => {
+      return org._id === orgid;
+    })[0];
+    callback(currentOrg);
+  });
+}
 
 function setupUser(userId, callback) {
   console.log("user is " + userId);
@@ -101,8 +130,13 @@ function setupOrg(orgId, callback) {
 }
 
 function populateCareerPathSelect(user, org) {
+  curCareerPath = false;
+  
   console.log("careerPahths ");
   console.log(careerPaths);
+  $("#careerPathSelect")
+    .find("option[value]")
+    .remove();
   careerPaths.forEach((path, index) => {
     console.log(path);
     let option = $("<option></option>")
@@ -202,7 +236,7 @@ function updateScoringDiv(user, org) {
         console.log("competency not selected");
         return true;
       }
-    
+
       let competencyCareerPathAlignment = false;
       let filter = competency.careerPathAlignmentArray.filter(path => {
         return path.label == curCareerPath;
@@ -210,16 +244,20 @@ function updateScoringDiv(user, org) {
       if (filter || filter.length > 0) {
         competencyCareerPathAlignment = filter[0];
       }
-      if(!competencyCareerPathAlignment.visibleForThisCareerPath || competencyCareerPathAlignment.visibleForThisCareerPath == "false"){
+      if (
+        !competencyCareerPathAlignment ||
+        !competencyCareerPathAlignment.visibleForThisCareerPath ||
+        competencyCareerPathAlignment.visibleForThisCareerPath == "false"
+      ) {
         return true;
       }
       let userScore = competencyCareerPathAlignment.myScore;
-      try{
+      try {
         userScore = user.scores[org._id][curCareerPath][competency.label];
-      }catch(ermsg){
-        console.log("error gettign user score for "+ermsg);
-      } 
-      
+      } catch (ermsg) {
+        console.log("error gettign user score for " + ermsg);
+      }
+
       // there is SOME competencies selected
       active = true;
 
@@ -232,9 +270,7 @@ function updateScoringDiv(user, org) {
           index +
           "' type='range' min='0' max='10'></div></li>"
       ).appendTo(scoringList);
-      $(".facetScore", scoringElement).val(
-        userScore
-      );
+      $(".facetScore", scoringElement).val(userScore);
       $(".facetToScoreLabel", scoringElement).text(competency.label);
       $(".facetToScoreDesc", scoringElement).text(competency.description);
 
@@ -247,7 +283,7 @@ function updateScoringDiv(user, org) {
         competencyCareerPathAlignment.myScore = value;
         console.log(groups);
         updateUserScores(user, org);
-        saveUserData(user, org, function(){});
+        saveUserData(user, org, function() {});
         updateRadar(user, org);
         updateGapPlaylist(user, org);
       });
@@ -313,23 +349,30 @@ function updateRadar(user, org) {
     group.competencies.forEach(competency => {
       console.log(competency);
       let competencyCareerPathAlignment = false;
+      if(!competency.careerPathAlignmentArray){
+        return true;
+      }
       let filter = competency.careerPathAlignmentArray.filter(path => {
         return path.label == curCareerPath;
       });
       if (filter || filter.length > 0) {
         competencyCareerPathAlignment = filter[0];
       }
-      if(!competencyCareerPathAlignment.visibleForThisCareerPath || competencyCareerPathAlignment.visibleForThisCareerPath == "false"){
+      if (
+        !competencyCareerPathAlignment ||
+        !competencyCareerPathAlignment.visibleForThisCareerPath ||
+        competencyCareerPathAlignment.visibleForThisCareerPath == "false"
+      ) {
         return true;
-      }      
-      
-      let userScore = competencyCareerPathAlignment.myScore;
-      try{
-        userScore = user.scores[org._id][curCareerPath][competency.label];
-      }catch(ermsg){
-        console.log("error gettign user score for "+ermsg);
       }
-        
+
+      let userScore = competencyCareerPathAlignment.myScore;
+      try {
+        userScore = user.scores[org._id][curCareerPath][competency.label];
+      } catch (ermsg) {
+        console.log("error gettign user score for " + ermsg);
+      }
+
       if (competency.selected) {
         scoredLabels.push({
           group: group.label,
@@ -443,7 +486,8 @@ function updateUserScores(user, org) {
         competencyCareerPathAlignment = filter[0];
       }
       console.log(competencyCareerPathAlignment);
-      user.scores[org._id][curCareerPath][competency.label] = competencyCareerPathAlignment.myScore;
+      user.scores[org._id][curCareerPath][competency.label] =
+        competencyCareerPathAlignment.myScore;
     });
   });
   console.log(user.scores);
@@ -455,6 +499,14 @@ function saveUserData(user, org, callback) {
     console.log(response);
     console.log(status);
     user._rev = response.rev;
+    callback(response);
+  });
+}
+
+function getOrgs(callback) {
+  $.get("/orgs", function(response, status) {
+    console.log("got all orgs");
+    console.log(response);
     callback(response);
   });
 }

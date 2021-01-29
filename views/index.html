@@ -61,7 +61,11 @@
               type="button"
               aria-expanded="false"
             >
-              Your Organization: <span class="orgName"></span><br/>
+              Your Organization: <span class="orgName"></span> <br/>
+              <select id="selectOrg">
+                <option>Select Organization...</option>
+              </select>
+              <br/>
               Design Your Delta:<br />
               An Individual Growth Chart to a Thriving Life in Law
             </button>
@@ -87,14 +91,14 @@
 
         <div
           id="collapseOne"
-          class="collapse show"
+          class="collapse"
           aria-labelledby="headingOne"
           data-parent="#accordionExample"
         >
           <div class="card-body">
             <div id="careerPathChoose">
               <select id="careerPathSelect">
-                <option value="">Select Career Path...</option>
+                <option>Select Career Path...</option>
               </select>
             </div>
           </div>
@@ -169,11 +173,11 @@
 -->
                 Sorry, your browser does not support inline SVG.
               </svg>
-              <div class="people delta_side">
+              <div class="process delta_side">
                 <h4 class="delta_side_title">
-                  The People
+                  The Process
                 </h4>
-                <div class="people_comps flowing"></div>
+                <div class="process_comps flowing"></div>
               </div>
               <div class="practice delta_side">
                 <h4 class="delta_side_title">
@@ -181,12 +185,13 @@
                 </h4>
                 <div class="practice_comps flowing"></div>
               </div>
-              <div class="process delta_side">
+              <div class="people delta_side">
                 <h4 class="delta_side_title">
-                  The Process
+                  The People
                 </h4>
-                <div class="process_comps flowing"></div>
+                <div class="people_comps flowing"></div>
               </div>
+              
             </div>
           </div>
         </div>
