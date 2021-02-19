@@ -11,10 +11,9 @@ h1 {
 }
 
 div {
-/*  border: 1px solid green;*/
+  /*  border: 1px solid green;*/
   border-radius: 5px;
 }
-
 
 /*
 .selected {
@@ -29,10 +28,10 @@ div {
 }
 
 #radar {
-  position: relative; 
-  height:80vh; 
-  width:80vw;
-/*  border: 3px solid orange;*/
+  position: relative;
+  height: 80vh;
+  width: 80vw;
+  /*  border: 3px solid orange;*/
   margin-left: auto;
   margin-right: auto;
 }
@@ -46,7 +45,7 @@ div {
   position: relative;
   margin-left: auto;
   margin-right: auto;
-/*  border: 1px solid red;*/
+  /*  border: 1px solid red;*/
 }
 
 .delta_side {
@@ -65,7 +64,7 @@ div {
 }
 
 .delta_side.process {
-    text-align: left;
+  text-align: left;
   position: absolute;
   top: 20px;
   left: 10px;
@@ -77,20 +76,17 @@ div {
   top: -20px;
   margin-left: auto;
   margin-right: auto;
- /* position: absolute;
+  /* position: absolute;
   top: 50px;
   left: 10px;*/
 }
 
-
-
-
 /* the headers for teh accordion */
 .card-header button {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
   font-size: 1em;
 }
 
@@ -103,20 +99,17 @@ div {
   background-color: grey;
 }
 
-
-
 #gapAccordion .card-header button {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content;
-    font-size: .6em;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+  font-size: 0.6em;
 }
 
-#gapAccordion  .card-header {
+#gapAccordion .card-header {
   background-color: lightblue;
 }
-
 
 /*
 .btn-link {
@@ -130,17 +123,16 @@ div {
 }
 */
 
-
 .card {
   background-color: white;
   color: #183760;
 }
-.card > .card-header{
+.card > .card-header {
   background-color: white;
   color: #183760;
 }
 
-.card .btn-link{
+.card .btn-link {
   background-color: white;
   color: #183760;
 }
@@ -150,12 +142,12 @@ div {
   color: #183760;
 }
 
-.collapsedcard > .card-header{
+.collapsedcard > .card-header {
   background-color: white;
   color: #183760;
 }
 
-.collapsedcard .btn-link{
+.collapsedcard .btn-link {
   background-color: white;
   color: #183760;
 }
@@ -163,34 +155,29 @@ div {
 .titlecard {
   color: white;
   background-color: #183760;
-  
 }
 
-.titlecard .btn-link{
+.titlecard .btn-link {
   color: white;
   background-color: #183760;
-
 }
 
-.titlecard .card-header{
+.titlecard .card-header {
   color: white;
   background-color: #183760;
-
 }
 
 #radar {
   background-color: white;
   color: #183760;
-  
 }
 
 .radarcardbody {
   background-color: white;
   color: #183760;
-  
 }
 
-#careerPathChoose{
+#careerPathChoose {
   text-align: center;
 }
 
@@ -201,13 +188,82 @@ div {
   margin-bottom: 15px;
 }
 
-.card-subtitle{
+.card-subtitle {
   font-size: 1.2em;
 }
 
-.orgdiv{
+.orgdiv {
   border-radius: 25px;
   background-color: lightblue;
   padding: 10px;
   margin: 10px;
 }
+
+/***Message Window Stuff 
+<div class="messageWindow">
+      <span class="routine message"></span>
+      <span class="warning message"></span>
+      <span class="error message"></span>
+      <button class="dismiss">
+        Got It
+      </button>
+    </div>
+***/
+.messageWindow {
+  z-index: 1000;
+  border-radius: 10px;
+  border: 3px solid black;
+  position: fixed;
+  height: auto;
+  width: 20%;
+  right: -20%;
+  top: 0px;
+  transition: right 2s;
+}
+
+.dismiss{
+  border-radius: 10px;
+}
+
+.messageWindow.closed {
+  right: -20%;
+}
+.messageWindow.open {
+  right: 20%;
+}
+
+.messageWindow.process {
+  border: 3px solid green;
+  background-color: lightgreen;
+  color: black;
+}
+
+.messageWindow.process .dismiss {
+  display: none;
+}
+
+.messageWindow.warning {
+  border: 3px solid yellow;
+  background-color: yellow;
+  color: black;  
+}
+
+.messageWindow.warning .dismiss {
+  display: block;
+}
+
+.messageWindow.error {
+  border: 3px solid red;
+  background-color: red;
+  color: yellow;  
+}
+
+.messageWindow.error .dismiss {
+  display: block;
+  
+}
+
+
+
+
+
