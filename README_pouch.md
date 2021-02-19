@@ -1,3 +1,21 @@
+#TODOs
+1. DEBUGGING: for bad data states
+2. enforce quality data in admin
+3. in delta page: disable accordion sections when required selections haven't been made yet.
+6. easy: login not required, only for saving data, and for admins
+1. add a messaging window (fixed to top, drops down then fades out)
+2. "Submitting" modal (doesn't stop more entry) - maybe combine with messaging window?
+4. bug: Caching issue? Menu not changing when someone is made admin
+8. put career paths on top of data heirarchy, with the competencies duplicated underneath them
+6. related to above: changing career path names requires changes in multiple parts of data arrays
+10. Gap playlist per competency: the same for each career path: separate it out into a different interface
+6. what can we do to make the admin interface a bit easier to use?
+7. DEFER: (we don't need this if we do #5 ) adding users to orgs BEFORE they have logged in the first time (eg invitations)
+
+9. DONE: easy: swith "the process" and "The people" in the triangle view (left/right sides)
+5. DONE: easy: User can pick ANY org - no need to add them in the admin
+
+
 # [PouchDB Express Server](https://pouchdb.com/) v2
 
 **_Zero to PouchDB Express Server in less than a minute._** 
