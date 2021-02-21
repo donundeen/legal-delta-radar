@@ -67,7 +67,7 @@ $(document).ready(function() {
         }
       });
     } else {
-      // if no user, then user can
+      // handle the "no user" state, when a user hasn't logged in: maybe we need a "blank" user with the minimal structure
     }
   });
 
@@ -78,7 +78,7 @@ $(document).ready(function() {
     if (!orgInfo) {
       $(document).trigger("selectOrgOff");
       $(document).trigger("careerPathSelectOff");
-      
+
       return;
     }
     $(".orgName").text(currentOrg.name);
@@ -184,7 +184,8 @@ function populateCareerPathSelect(user, org) {
   $("#careerPathSelect").change(evt => {
     let val = $("#careerPathSelect option:selected").val();
     console.log(val);
-    if(!val || val === ""){
+    $(".careerPathDisplay").text(val);
+    if (!val || val === "") {
       $(document).trigger("careerPathSelectOff");
       return;
     }
@@ -295,7 +296,9 @@ function updateScoringDiv(user, org) {
       }
       let userScore = competencyCareerPathAlignment.myScore;
       try {
-        userScore = user.scores[org._id][curCareerPath][competency.label];
+        if (user.scores) {
+          userScore = user.scores[org._id][curCareerPath][competency.label];
+        }
       } catch (ermsg) {
         console.log("error gettign user score for " + ermsg);
       }
@@ -410,7 +413,9 @@ function updateRadar(user, org) {
 
       let userScore = competencyCareerPathAlignment.myScore;
       try {
-        userScore = user.scores[org._id][curCareerPath][competency.label];
+        if (user.scores) {
+          userScore = user.scores[org._id][curCareerPath][competency.label];
+        }
       } catch (ermsg) {
         console.log("error gettign user score for " + ermsg);
       }
@@ -509,6 +514,9 @@ function updateGapPlaylist(user, org) {
 function updateUserScores(user, org) {
   console.log("updating user scores " + curCareerPath);
   // get the user-specific data from the group data, put in user for storage.
+  if(!user){
+    user = {};
+  }
   if (!user.scores) {
     user.scores = {};
   }

@@ -1653,3 +1653,16 @@
 [Fri, 19 Feb 2021 22:18:56 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
 [Fri, 19 Feb 2021 22:23:25 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
 [Fri, 19 Feb 2021 22:24:15 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:04:29 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:08:32 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:08:32 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /___glitch_loading_status___ 404
+[Sun, 21 Feb 2021 19:08:33 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:10:58 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /___glitch_loading_status___ 404
+[Sun, 21 Feb 2021 19:10:59 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:29:33 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:31:04 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:32:19 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:33:05 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:34:19 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:35:16 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
+[Sun, 21 Feb 2021 19:36:06 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /favicon.ico 404
