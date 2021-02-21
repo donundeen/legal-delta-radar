@@ -254,7 +254,10 @@ $(document).ready(function() {
 
   function saveOrg(org, reveditor, callback) {
     console.log("saving");
+    processMessage("saving data...");
     $.post("/org", org, function(response, status) {
+      processMessage("Saved!");
+      setTimeout(closeMessageWindow, 3000);
       console.log("new org data posted");
       console.log(response);
       let rev = response.rev;

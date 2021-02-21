@@ -39,6 +39,12 @@
     <script>
       let userId = "{{user._id}}";
     </script>    
+    <div class="messageWindow process">
+      <span class="message"></span>
+      <button class="dismiss">
+        Got It
+      </button>
+    </div>
     
     {% if user %}
     Hello {{user.displayName}}
@@ -56,24 +62,24 @@
       <div class="card titlecard">
         <div class="card-header">
           <h2 class="mb-0">
+              Design Your Delta:<br />
+              An Individual Growth Chart to a Thriving Life in Law            
             <button
               class="btn btn-link btn-block text-center"
               type="button"
               aria-expanded="false"
             >
-              Your Organization: <span class="orgName"></span> <br/>
+              Your Organization: <br>
               <select id="selectOrg">
-                <option>Select Organization...</option>
+                <option value="">Select Organization...</option>
               </select>
-              <br/>
-              Design Your Delta:<br />
-              An Individual Growth Chart to a Thriving Life in Law
+
             </button>
           </h2>
         </div>
       </div>
 
-      <div class="card">
+      <div class="card startDisabled" data-depends="selectOrg">
         <div class="card-header" id="headingOne">
           <h2 class="mb-0">
             <button
@@ -84,7 +90,7 @@
               aria-expanded="true"
               aria-controls="collapseOne"
             >
-              Ideal/Chosen Career Path
+              Ideal/Chosen Career Path: <br><span class="careerPathDisplay"></span>
             </button>
           </h2>
         </div>
@@ -98,14 +104,14 @@
           <div class="card-body">
             <div id="careerPathChoose">
               <select id="careerPathSelect">
-                <option>Select Career Path...</option>
+                <option value="">Select Career Path...</option>
               </select>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="card deltacard">
+      <div class="card deltacard startDisabled" data-depends="careerPathSelect">
         <div class="card-header" id="headingTwo">
           <h2 class="mb-0">
             <button
@@ -197,7 +203,7 @@
         </div>
       </div>
 
-      <div class="card scoringcard">
+      <div class="card scoringcard startDisabled" data-depends="careerPathSelect">
         <div class="card-header" id="heading4">
           <h2 class="mb-0">
             <button
@@ -229,7 +235,7 @@
         </div>
       </div>
 
-      <div class="card radarcard">
+      <div class="card radarcard startDisabled" data-depends="careerPathSelect">
         <div class="card-header" id="heading5">
           <h2 class="mb-0">
             <button
@@ -258,7 +264,7 @@
         </div>
       </div>
 
-      <div class="card gapcard">
+      <div class="card gapcard startDisabled" data-depends="careerPathSelect">
         <div class="card-header" id="headingGap">
           <h2 class="mb-0">
             <button
@@ -323,6 +329,7 @@
     <script src="/dataset.js" defer></script>
     <script src="/setup.js" defer></script>
     <script src="/radar_funcs.js" defer></script>
+    <script src="/popup.js" defer></script>
     <script src="/index_script.js" defer></script>
     <script src="/db_stuff.js" defer></script>
   </body>

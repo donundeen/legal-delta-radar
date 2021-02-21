@@ -17,6 +17,32 @@ $(document).ready(function() {
   
   */
 
+  $(".startDisabled").each(function(item) {
+    $("button.btn", this).attr("data-toggle", "x");
+    $("button.btn", this).css("background-color", "grey");
+    let depends = $(this).attr("data-depends");
+    let elem = this;
+    console.log("listening for " + depends);
+    $(document).on(depends, function() {
+      console.log("triggered", 2000);
+      $("button.btn", elem).attr("data-toggle", "collapse");
+      $("button.btn", elem).css("background-color", "white");
+    });
+    $(document).on(depends + "Off", function() {
+      console.log("triggered", 2000);
+      $(".collapse", elem).collapse("hide");
+      $("button.btn", elem).attr("data-toggle", "x");
+      $("button.btn", elem).css("background-color", "grey");
+    });
+  });
+
+  function testDepends() {
+    console.log("test depends", 2000);
+    $(document).trigger("selectOrg");
+  }
+
+  //setTimeout(testDepends, 2000);
+
   console.log("hi " + 1);
 
   //  createRadar("radarcanvas", competencies, data);
@@ -41,7 +67,7 @@ $(document).ready(function() {
         }
       });
     } else {
-      // if no user, then user can
+      // handle the "no user" state, when a user hasn't logged in: maybe we need a "blank" user with the minimal structure
     }
   });
 
@@ -49,6 +75,12 @@ $(document).ready(function() {
     currentOrg = orgInfo;
     console.log("org selected");
     console.log(currentOrg);
+    if (!orgInfo) {
+      $(document).trigger("selectOrgOff");
+      $(document).trigger("careerPathSelectOff");
+
+      return;
+    }
     $(".orgName").text(currentOrg.name);
     groups = currentOrg.dataset.groups;
     careerPaths = currentOrg.dataset.careerPaths;
@@ -56,6 +88,7 @@ $(document).ready(function() {
     updateScoringDiv(currentUser, currentOrg);
     updateRadar(currentUser, currentOrg);
     updateDelta(currentUser, currentOrg);
+    $(document).trigger("selectOrg");
   }
 
   // don't let disabled accordions open
@@ -131,12 +164,16 @@ function setupOrg(orgId, callback) {
 
 function populateCareerPathSelect(user, org) {
   curCareerPath = false;
-  
+
   console.log("careerPahths ");
   console.log(careerPaths);
   $("#careerPathSelect")
     .find("option[value]")
     .remove();
+  let option = $("<option value=''>Select Career Path...</option>").appendTo(
+    "#careerPathSelect"
+  );
+
   careerPaths.forEach((path, index) => {
     console.log(path);
     let option = $("<option></option>")
@@ -147,10 +184,16 @@ function populateCareerPathSelect(user, org) {
   $("#careerPathSelect").change(evt => {
     let val = $("#careerPathSelect option:selected").val();
     console.log(val);
+    $(".careerPathDisplay").text(val);
+    if (!val || val === "") {
+      $(document).trigger("careerPathSelectOff");
+      return;
+    }
     curCareerPath = val;
     updateScoringDiv(user, org);
     updateRadar(user, org);
     updateGapPlaylist(user, org);
+    $(document).trigger("careerPathSelect");
   });
 }
 
@@ -253,7 +296,9 @@ function updateScoringDiv(user, org) {
       }
       let userScore = competencyCareerPathAlignment.myScore;
       try {
-        userScore = user.scores[org._id][curCareerPath][competency.label];
+        if (user.scores) {
+          userScore = user.scores[org._id][curCareerPath][competency.label];
+        }
       } catch (ermsg) {
         console.log("error gettign user score for " + ermsg);
       }
@@ -349,7 +394,7 @@ function updateRadar(user, org) {
     group.competencies.forEach(competency => {
       console.log(competency);
       let competencyCareerPathAlignment = false;
-      if(!competency.careerPathAlignmentArray){
+      if (!competency.careerPathAlignmentArray) {
         return true;
       }
       let filter = competency.careerPathAlignmentArray.filter(path => {
@@ -368,7 +413,9 @@ function updateRadar(user, org) {
 
       let userScore = competencyCareerPathAlignment.myScore;
       try {
-        userScore = user.scores[org._id][curCareerPath][competency.label];
+        if (user.scores) {
+          userScore = user.scores[org._id][curCareerPath][competency.label];
+        }
       } catch (ermsg) {
         console.log("error gettign user score for " + ermsg);
       }
@@ -467,6 +514,9 @@ function updateGapPlaylist(user, org) {
 function updateUserScores(user, org) {
   console.log("updating user scores " + curCareerPath);
   // get the user-specific data from the group data, put in user for storage.
+  if(!user){
+    user = {};
+  }
   if (!user.scores) {
     user.scores = {};
   }
