@@ -1,6 +1,9 @@
-function createRadar(selector, labels, data, idealData){
-  
-    /*
+radarMaxVal = 10;
+radarMinVal = 0;
+
+
+function createRadar(selector, labels, data, idealData) {
+  /*
   new Chart(document.getElementById("chartjs-3"), {
     type: "radar",
     data: {
@@ -77,28 +80,23 @@ function createRadar(selector, labels, data, idealData){
         display: false
       },
       ticks: {
-        suggestedMin: minVal,
-        suggestedMax: maxVal
+        suggestedMin: radarMinVal,
+        suggestedMax: radarMaxVal
       }
     }
   };
 
-  
-  if(window.chart && window.chart !== null){
-        window.chart.destroy();
-  }  
+  if (window.chart && window.chart !== null) {
+    window.chart.destroy();
+  }
   var ctx = document.getElementById(selector).getContext("2d");
-  
-  
-  
-  
+
   window.chart = new Chart(ctx, {
     type: "radar",
     data: data,
     options: options
   });
-  
-  
+
   /*
   // this part tries to fix the background color of the chart, so the downloaded image will look right
   // doesn't work yet...
@@ -111,56 +109,45 @@ function createRadar(selector, labels, data, idealData){
   // Restore the original context state from `context.save()`
   //ctx.restore();  
   */
-  
 }
-
-
-
 
 /* takes a string phrase and breaks it into separate phrases 
    no bigger than 'maxwidth', breaks are made at complete words.*/
 
-function formatLabel(str, maxwidth){
-    var sections = [];
-    var words = str.split(" ");
-    var temp = "";
+function formatLabel(str, maxwidth) {
+  var sections = [];
+  var words = str.split(" ");
+  var temp = "";
 
-    words.forEach(function(item, index){
-        if(temp.length > 0)
-        {
-            var concat = temp + ' ' + item;
+  words.forEach(function(item, index) {
+    if (temp.length > 0) {
+      var concat = temp + " " + item;
 
-            if(concat.length > maxwidth){
-                sections.push(temp);
-                temp = "";
-            }
-            else{
-                if(index == (words.length-1))
-                {
-                    sections.push(concat);
-                    return;
-                }
-                else{
-                    temp = concat;
-                    return;
-                }
-            }
+      if (concat.length > maxwidth) {
+        sections.push(temp);
+        temp = "";
+      } else {
+        if (index == words.length - 1) {
+          sections.push(concat);
+          return;
+        } else {
+          temp = concat;
+          return;
         }
+      }
+    }
 
-        if(index == (words.length-1))
-        {
-            sections.push(item);
-            return;
-        }
+    if (index == words.length - 1) {
+      sections.push(item);
+      return;
+    }
 
-        if(item.length < maxwidth) {
-            temp = item;
-        }
-        else {
-            sections.push(item);
-        }
+    if (item.length < maxwidth) {
+      temp = item;
+    } else {
+      sections.push(item);
+    }
+  });
 
-    });
-
-    return sections;
+  return sections;
 }

@@ -1,13 +1,13 @@
 #TODOs
+
 5. enforce quality data in admin
 6. bug: Caching issue? Menu not changing when someone is made admin
-7. put career paths on top of data heirarchy, with the competencies duplicated underneath them
-8. related to above: changing career path names requires changes in multiple parts of data arrays
 9. Gap playlist per competency: the same for each career path: separate it out into a different interface
 10. what can we do to make the admin interface a bit easier to use?
 
 7. DEFER: (we don't need this if we do #5 ) adding users to orgs BEFORE they have logged in the first time (eg invitations)
 
+7. DONE: put career paths on top of data heirarchy, with the competencies duplicated underneath them
 1. DONE: index_script.js:300 error gettign user score for TypeError: Cannot read property 'FIT' of undefined : errors when user is not defined.
 -- see index_script.js line 70, add code for handling a "no user" state
 3. DONE: in delta page: disable accordion sections when required selections haven't been made yet.

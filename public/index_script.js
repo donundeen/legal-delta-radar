@@ -3,13 +3,14 @@
 
 // prints "hi" in the browser's dev tools console
 
+// some global variables (not gret practice, work on this later)
 let curCareerPath = false;
+let currentOrg = false;
+let currentUser = false;
+let allOrgs = false;
+let groups = false;
 
 $(document).ready(function() {
-  let currentUser = false;
-  let currentOrg = false;
-  let allOrgs = false;
-
   /*
   db.info().then(function(info) {
     console.log(info);
@@ -17,42 +18,13 @@ $(document).ready(function() {
   
   */
 
-  $(".startDisabled").each(function(item) {
-    $("button.btn", this).attr("data-toggle", "x");
-    $("button.btn", this).css("background-color", "grey");
-    let depends = $(this).attr("data-depends");
-    let elem = this;
-    console.log("listening for " + depends);
-    $(document).on(depends, function() {
-      console.log("triggered", 2000);
-      $("button.btn", elem).attr("data-toggle", "collapse");
-      $("button.btn", elem).css("background-color", "white");
-    });
-    $(document).on(depends + "Off", function() {
-      console.log("triggered", 2000);
-      $(".collapse", elem).collapse("hide");
-      $("button.btn", elem).attr("data-toggle", "x");
-      $("button.btn", elem).css("background-color", "grey");
-    });
-  });
+  // this sets up the dependency system, so that some sections can't open until previous sections have been completed.
+  setupUIDependencies();
 
-  function testDepends() {
-    console.log("test depends", 2000);
-    $(document).trigger("selectOrg");
-  }
+  // setup FlowType (dynamic font size)
+  setupFlowType();
 
-  //setTimeout(testDepends, 2000);
-
-  console.log("hi " + 1);
-
-  //  createRadar("radarcanvas", competencies, data);
-  $(".flowing").flowtype({
-    minimum: 300,
-    maximum: 1200,
-    minFont: 10,
-    maxFont: 40,
-    fontRatio: 30
-  });
+  setupAccordion();
 
   // putting everything together;
   getOrgs(function(orgs) {
@@ -61,62 +33,32 @@ $(document).ready(function() {
     if (userId && userId.trim() !== "") {
       setupUser(userId, function(userInfo) {
         currentUser = userInfo;
+        /*
+        // this sets the org if the user has been added to an org, 
+        // but let remove this for now, so any user can access any org
         let orgId = currentUser.org;
         if (orgId && orgId.trim() !== "") {
           setupOrg(orgId, handleOrgSelect);
         }
+        */
       });
     } else {
       // handle the "no user" state, when a user hasn't logged in: maybe we need a "blank" user with the minimal structure
+      currentUser = {};
     }
   });
-
-  function handleOrgSelect(orgInfo) {
-    currentOrg = orgInfo;
-    console.log("org selected");
-    console.log(currentOrg);
-    if (!orgInfo) {
-      $(document).trigger("selectOrgOff");
-      $(document).trigger("careerPathSelectOff");
-
-      return;
-    }
-    $(".orgName").text(currentOrg.name);
-    groups = currentOrg.dataset.groups;
-    careerPaths = currentOrg.dataset.careerPaths;
-    populateCareerPathSelect(currentUser, currentOrg);
-    updateScoringDiv(currentUser, currentOrg);
-    updateRadar(currentUser, currentOrg);
-    updateDelta(currentUser, currentOrg);
-    $(document).trigger("selectOrg");
-  }
-
-  // don't let disabled accordions open
-  $(".collapse")
-    .on("hide.bs.collapse", function(e) {
-      $(e.target)
-        .parent()
-        .addClass("collapsedcard");
-    })
-    .on("show.bs.collapse", function(e) {
-      $(e.target)
-        .parent()
-        .removeClass("collapsedcard");
-      return !$(e.target)
-        .parent()
-        .hasClass("disabled");
-      //    return isMyDivEnabled(); // true or false
-    });
-
-  $(".collapse")
-    .parent()
-    .addClass("collapsedcard");
-
-  $("button[aria-expanded='true']")
-    .closest(".card")
-    .removeClass("collapsedcard");
 });
 
+// get all orgs from DB, and pass to callback function
+function getOrgs(callback) {
+  $.get("/orgs", function(response, status) {
+    console.log("got all orgs");
+    console.log(response);
+    callback(response);
+  });
+}
+
+// setup the dropdown for selecting an org
 function createOrgSelect(orgs, callback) {
   console.log("createOrgSelect");
   console.log(orgs);
@@ -135,19 +77,28 @@ function createOrgSelect(orgs, callback) {
   });
 }
 
-function setupUser(userId, callback) {
-  console.log("user is " + userId);
-  let data = { id: userId };
-  $.get("/user", data, function(response, status) {
-    console.log("got user");
-    console.log(response);
-    console.log(status);
-    if (callback) {
-      callback(response);
-    }
-  });
+// handle the selection of an org
+function handleOrgSelect(orgInfo) {
+  currentOrg = orgInfo;
+  console.log("org selected");
+  console.log(currentOrg);
+  if (!orgInfo) {
+    $(document).trigger("selectOrgOff");
+    $(document).trigger("careerPathSelectOff");
+
+    return;
+  }
+  $(".orgName").text(currentOrg.name);
+  careerPaths = currentOrg.dataset.careerPaths;
+  populateCareerPathSelect(currentUser, currentOrg);
+  updateScoringDiv(currentUser, currentOrg);
+  updateRadar(currentUser, currentOrg);
+  updateDelta(currentUser, currentOrg);
+  $(document).trigger("selectOrg");
+  $("#collapseOne").collapse("show");
 }
 
+// get all the data for this OrgID
 function setupOrg(orgId, callback) {
   console.log("org is " + orgId);
   let data = { id: orgId };
@@ -162,10 +113,26 @@ function setupOrg(orgId, callback) {
   });
 }
 
+// get the user data and populate some globals
+function setupUser(userId, callback) {
+  console.log("user is " + userId);
+  let data = { id: userId };
+  $.get("/user", data, function(response, status) {
+    console.log("got user");
+    console.log(response);
+    console.log(status);
+    if (callback) {
+      callback(response);
+    }
+  });
+}
+
+// setup the box for selection of the careerPath
 function populateCareerPathSelect(user, org) {
+  // nuke the exisiting curCareerPath, if it exists.
   curCareerPath = false;
 
-  console.log("careerPahths ");
+  console.log("careerPaths ");
   console.log(careerPaths);
   $("#careerPathSelect")
     .find("option[value]")
@@ -174,8 +141,10 @@ function populateCareerPathSelect(user, org) {
     "#careerPathSelect"
   );
 
+  // careerPaths is an array of careerPath Objects
   careerPaths.forEach((path, index) => {
     console.log(path);
+    path = path.label;
     let option = $("<option></option>")
       .val(path)
       .text(path)
@@ -189,51 +158,15 @@ function populateCareerPathSelect(user, org) {
       $(document).trigger("careerPathSelectOff");
       return;
     }
-    curCareerPath = val;
+    curCareerPath = careerPaths.filter(path => {
+      return val == path.label;
+    })[0];
     updateScoringDiv(user, org);
     updateRadar(user, org);
+    updateDelta(user, org);  
     updateGapPlaylist(user, org);
     $(document).trigger("careerPathSelect");
-  });
-}
-
-function createFacetGroups(user, org) {
-  // create the first sections where people select competencies
-
-  // starting with the three groups:
-  groups.forEach((group, groupindex) => {
-    console.log(group);
-    var descText =
-      "Review the following 12 competencies and choose the top four which you think are most important to a legal professional's ability to " +
-      group.ability;
-    let newdiv = $(
-      "<div class='facetGroup card'><div class='card-body'><h3 class='facetGroupHeader card-title'></h3><h4 class='facetDesc card-subtitle'></h4></div></div>"
-    );
-    $(".facetGroupHeader", newdiv).text(group.label);
-    $(".facetDesc", newdiv).text(descText);
-    $("#facetGroups").append(newdiv);
-
-    let facetsDiv = $("<ul class='list-group'></ul>").appendTo(newdiv);
-
-    // loop through competencies for each group
-    group.competencies.forEach((competency, compindex) => {
-      let facetDiv = $("<li class='facetToGroupLabel list-group-item'></li>");
-      $(facetDiv).text(competency.label);
-      $(facetsDiv).append(facetDiv);
-      // when a competency is clicked on, mark it "selected" (or unselect),
-      // update the data object with the selected value
-      // then update the scoring section below.
-      // and also update the delta's text.
-      facetDiv.on("click", function(evt) {
-        $(this).toggleClass("selected");
-        $(this).toggleClass("active");
-        competency.selected = $(this).hasClass("selected");
-        updateScoringDiv(user, org);
-        updateDelta(user, org);
-        updateRadar(user, org);
-        updateGapPlaylist(user, org);
-      });
-    });
+    $("#collapseTwo").collapse("show");
   });
 }
 
@@ -252,7 +185,7 @@ function updateScoringDiv(user, org) {
 
   let active = false;
   // interate through the groups and create the scoring div for that group
-  groups.forEach(group => {
+  curCareerPath.groups.forEach(group => {
     console.log("group");
 
     let scoringGroupDiv = $(
@@ -280,24 +213,11 @@ function updateScoringDiv(user, org) {
         return true;
       }
 
-      let competencyCareerPathAlignment = false;
-      let filter = competency.careerPathAlignmentArray.filter(path => {
-        return path.label == curCareerPath;
-      });
-      if (filter || filter.length > 0) {
-        competencyCareerPathAlignment = filter[0];
-      }
-      if (
-        !competencyCareerPathAlignment ||
-        !competencyCareerPathAlignment.visibleForThisCareerPath ||
-        competencyCareerPathAlignment.visibleForThisCareerPath == "false"
-      ) {
-        return true;
-      }
-      let userScore = competencyCareerPathAlignment.myScore;
+      let userScore = competency.myScore;
       try {
         if (user.scores) {
-          userScore = user.scores[org._id][curCareerPath][competency.label];
+          userScore =
+            user.scores[org._id][curCareerPath.label][competency.label];
         }
       } catch (ermsg) {
         console.log("error gettign user score for " + ermsg);
@@ -325,7 +245,24 @@ function updateScoringDiv(user, org) {
       $(".facetScore", scoringElement).on("change", function(evt) {
         let value = $(evt.target).val();
         console.log(value);
-        competencyCareerPathAlignment.myScore = value;
+        competency.myScore = value;
+        if (!user) {
+          user = {};
+        }
+        if (!user.scores) {
+          user.scores = {};
+        }
+        if (!user.scores[org._id]) {
+          user.scores[org._id] = {};
+        }
+        if (!user.scores[org._id][curCareerPath.label]) {
+          user.scores[org._id][curCareerPath.label] = {};
+        }
+        try {
+          user.scores[org._id][curCareerPath.label][competency.label] = value;
+        } catch (ermsg) {
+          console.log("error gettign user score for " + ermsg);
+        }
         console.log(groups);
         updateUserScores(user, org);
         saveUserData(user, org, function() {});
@@ -347,7 +284,12 @@ function updateDelta(user, org) {
   /* don't let the delta get openable until some content exists */
   let active = false;
 
-  groups.forEach(group => {
+  if (!curCareerPath) {
+    console.log("no curCareerPath");
+    return;
+  }
+
+  curCareerPath.groups.forEach(group => {
     let classname = group.scriptname + "_comps";
     $("." + classname).empty();
     let comps = group.competencies;
@@ -378,6 +320,7 @@ function updateDelta(user, org) {
   }
 }
 
+// create the radar graph, from user and org data
 function updateRadar(user, org) {
   let labels = [];
   let data = [];
@@ -390,31 +333,15 @@ function updateRadar(user, org) {
     return false;
   }
 
-  groups.forEach(group => {
+  curCareerPath.groups.forEach(group => {
     group.competencies.forEach(competency => {
       console.log(competency);
-      let competencyCareerPathAlignment = false;
-      if (!competency.careerPathAlignmentArray) {
-        return true;
-      }
-      let filter = competency.careerPathAlignmentArray.filter(path => {
-        return path.label == curCareerPath;
-      });
-      if (filter || filter.length > 0) {
-        competencyCareerPathAlignment = filter[0];
-      }
-      if (
-        !competencyCareerPathAlignment ||
-        !competencyCareerPathAlignment.visibleForThisCareerPath ||
-        competencyCareerPathAlignment.visibleForThisCareerPath == "false"
-      ) {
-        return true;
-      }
 
-      let userScore = competencyCareerPathAlignment.myScore;
+      let userScore = competency.myScore;
       try {
         if (user.scores) {
-          userScore = user.scores[org._id][curCareerPath][competency.label];
+          userScore =
+            user.scores[org._id][curCareerPath.label][competency.label];
         }
       } catch (ermsg) {
         console.log("error gettign user score for " + ermsg);
@@ -425,14 +352,13 @@ function updateRadar(user, org) {
           group: group.label,
           label: competency.label,
           score: userScore,
-          visible: competencyCareerPathAlignment.visibleForThisCareerPath,
-          ideal_score: competencyCareerPathAlignment.idealScore
+          visible: competency.visibleForThisCareerPath,
+          ideal_score: competency.idealScore
         });
         active = true;
-        if (userScore < competencyCareerPathAlignment.idealScore) {
+        if (userScore < competency.idealScore) {
           competency.hasGap = true;
-          competency.gapSize =
-            competencyCareerPathAlignment.idealScore - userScore;
+          competency.gapSize = competency.idealScore - userScore;
         } else {
           competency.hasGap = false;
         }
@@ -470,7 +396,7 @@ function updateGapPlaylist(user, org) {
   $("#gapAccordion").empty();
   let index = 0;
   let competencyList = [];
-  groups.forEach(group => {
+  curCareerPath.groups.forEach(group => {
     group.competencies.forEach(competency => {
       console.log(competency.label);
 
@@ -512,9 +438,9 @@ function updateGapPlaylist(user, org) {
 }
 
 function updateUserScores(user, org) {
-  console.log("updating user scores " + curCareerPath);
+  console.log("updating user scores " + curCareerPath.label);
   // get the user-specific data from the group data, put in user for storage.
-  if(!user){
+  if (!user) {
     user = {};
   }
   if (!user.scores) {
@@ -523,27 +449,23 @@ function updateUserScores(user, org) {
   if (!user.scores[org._id]) {
     user.scores[org._id] = {};
   }
-  user.scores[org._id][curCareerPath] = {};
+  user.scores[org._id][curCareerPath.label] = {};
 
-  org.dataset.groups.forEach(group => {
+  curCareerPath.groups.forEach(group => {
     group.competencies.forEach(competency => {
       console.log(competency);
-      let competencyCareerPathAlignment = false;
-      let filter = competency.careerPathAlignmentArray.filter(path => {
-        return path.label == curCareerPath;
-      });
-      if (filter || filter.length > 0) {
-        competencyCareerPathAlignment = filter[0];
-      }
-      console.log(competencyCareerPathAlignment);
-      user.scores[org._id][curCareerPath][competency.label] =
-        competencyCareerPathAlignment.myScore;
+      user.scores[org._id][curCareerPath.label][competency.label] =
+        competency.myScore;
     });
   });
   console.log(user.scores);
 }
 
 function saveUserData(user, org, callback) {
+  if (!user._rev) {
+    // this isn't a logged in user, so just return
+    callback(null);
+  }
   $.post("/user", user, function(response, status) {
     console.log("user membership updated");
     console.log(response);
@@ -553,10 +475,109 @@ function saveUserData(user, org, callback) {
   });
 }
 
-function getOrgs(callback) {
-  $.get("/orgs", function(response, status) {
-    console.log("got all orgs");
-    console.log(response);
-    callback(response);
+///************UI SETUP FUNCTIONS ******************/
+
+// setup accordion
+function setupAccordion() {
+  // don't let disabled accordions open
+  $(".collapse")
+    .on("hide.bs.collapse", function(e) {
+      $(e.target)
+        .parent()
+        .addClass("collapsedcard");
+    })
+    .on("show.bs.collapse", function(e) {
+      $(e.target)
+        .parent()
+        .removeClass("collapsedcard");
+      return !$(e.target)
+        .parent()
+        .hasClass("disabled");
+      //    return isMyDivEnabled(); // true or false
+    });
+
+  $(".collapse")
+    .parent()
+    .addClass("collapsedcard");
+
+  $("button[aria-expanded='true']")
+    .closest(".card")
+    .removeClass("collapsedcard");
+}
+
+// flowtype handles dynamic font sizes
+function setupFlowType() {
+  $(".flowing").flowtype({
+    minimum: 300,
+    maximum: 1200,
+    minFont: 10,
+    maxFont: 40,
+    fontRatio: 30
   });
 }
+
+// this sets up the dependency system, so that some sections can't open until previous sections have been completed.
+function setupUIDependencies() {
+  $(".startDisabled").each(function(item) {
+    $("button.btn", this).attr("data-toggle", "x");
+    $("button.btn", this).css("background-color", "grey");
+    let depends = $(this).attr("data-depends");
+    let elem = this;
+    console.log("listening for " + depends);
+    $(document).on(depends, function() {
+      console.log("triggered", 2000);
+      $("button.btn", elem).attr("data-toggle", "collapse");
+      $("button.btn", elem).css("background-color", "white");
+    });
+    $(document).on(depends + "Off", function() {
+      console.log("triggered", 2000);
+      $(".collapse", elem).collapse("hide");
+      $("button.btn", elem).attr("data-toggle", "x");
+      $("button.btn", elem).css("background-color", "grey");
+    });
+  });
+}
+
+/***** Deprecated ? **********/
+
+/*
+function createFacetGroups(user, org) {
+  // create the first sections where people select competencies
+
+  // starting with the three groups:
+  groups.forEach((group, groupindex) => {
+    console.log(group);
+    var descText =
+      "Review the following 12 competencies and choose the top four which you think are most important to a legal professional's ability to " +
+      group.ability;
+    let newdiv = $(
+      "<div class='facetGroup card'><div class='card-body'><h3 class='facetGroupHeader card-title'></h3><h4 class='facetDesc card-subtitle'></h4></div></div>"
+    );
+    $(".facetGroupHeader", newdiv).text(group.label);
+    $(".facetDesc", newdiv).text(descText);
+    $("#facetGroups").append(newdiv);
+
+    let facetsDiv = $("<ul class='list-group'></ul>").appendTo(newdiv);
+
+    // loop through competencies for each group
+    group.competencies.forEach((competency, compindex) => {
+      let facetDiv = $("<li class='facetToGroupLabel list-group-item'></li>");
+      $(facetDiv).text(competency.label);
+      $(facetsDiv).append(facetDiv);
+      // when a competency is clicked on, mark it "selected" (or unselect),
+      // update the data object with the selected value
+      // then update the scoring section below.
+      // and also update the delta's text.
+      facetDiv.on("click", function(evt) {
+        $(this).toggleClass("selected");
+        $(this).toggleClass("active");
+        competency.selected = $(this).hasClass("selected");
+        updateScoringDiv(user, org);
+        updateDelta(user, org);
+        updateRadar(user, org);
+        updateGapPlaylist(user, org);
+      });
+    });
+  });
+}
+*/

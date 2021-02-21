@@ -5,8 +5,6 @@ var competencies = facets.map((facet, index) => {
 console.log(JSON.stringify(competencies));
 */
 
-var minVal = 0;
-var maxVal = 10;
 
 let careerPaths = [];
 let templist = {};
