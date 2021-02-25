@@ -70,9 +70,23 @@ $(document).ready(function() {
       editor.on("change", function() {
         editorChanged(editor, index);
       });
+      
+      editor.on('addRow', subeditor => {
+        // when a new careerPath is added, we want to populate it with default values, defined in schema.js
+        console.log('addRow', subeditor);
+        console.log(subeditor.path);
+        
+        // the path is root.dataset.careerPaths.NUMBER , and nothing beyond that
+        if(subeditor.path.match(/^root.dataset.careerPaths.[0-9]+$/)){        
+          let value = subeditor.getValue();
+          var toAdd = defaultCareerPathGroups; // this is defined in schemas.js
+          value.groups = toAdd;
+          subeditor.setValue(value);
+        }
+      });      
     });
   }
-
+  
   function editorChanged(editor, index) {
     // Do something
     console.log("editor values changed ");

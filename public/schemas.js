@@ -1,3 +1,5 @@
+let defaultScoreValue = 5;
+
 var schema = {
   type: "object",
   title: "Organization",
@@ -116,13 +118,21 @@ var schema = {
                           },
                           idealScore: {
                             title: "Ideal Score",
-                            type: "integer"
+                            type: "integer",
+                            options: {
+                              startVal: 5
+                            }
                           },
                           myScore: {
                             options: {
                               hidden: true
                             }
                           },
+                          score: {
+                            options: {
+                              hidden: true
+                            }
+                          },                          
                           visibleForThisCareerPath: {
                             type: "boolean",
                             title: "Show for this Career Path?"
@@ -153,3 +163,6 @@ var schema = {
     }
   }
 };
+
+
+var defaultCareerPathGroups = [{label: "People"},{label: "Process"},{label: "Practice"},]

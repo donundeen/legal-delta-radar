@@ -1,12 +1,22 @@
 #TODOs
 
+
+6. auto-populate some competencies under each group : 12 each per group, alyson will provide
+7. default gap playlist items for each of the 36 competencies: Alyson will provide
+5. Compentency Groups (people, process, practice) should be created AUTOMATICALLY when a new Career path is created
+6. BUG: Competency Group created UNDER a compenteny Group, should be a Competency
 5. enforce quality data in admin
-6. bug: Caching issue? Menu not changing when someone is made admin
-9. Gap playlist per competency: the same for each career path: separate it out into a different interface
-10. what can we do to make the admin interface a bit easier to use?
 
-7. DEFER: (we don't need this if we do #5 ) adding users to orgs BEFORE they have logged in the first time (eg invitations)
+#CONSIDER:
 
+1. dragging the center point of delta model, based on ideal score average for each group?
+2. OR, dragging it in Admin for each career path?
+
+#DONE
+
+4. DONE Bug: competencies under delta gropus not showing in triangle view - for "Cat Moon" under FIT
+4. DONE Bug: ALSO doens't show up under assessment, except for ONE item under Peope
+6. DONE bug: Caching issue? Menu not changing when someone is made admin - aly is seeing the menu : just need update in DB to make her a superadmin
 7. DONE: put career paths on top of data heirarchy, with the competencies duplicated underneath them
 1. DONE: index_script.js:300 error gettign user score for TypeError: Cannot read property 'FIT' of undefined : errors when user is not defined.
 -- see index_script.js line 70, add code for handling a "no user" state
@@ -16,6 +26,13 @@
 6. DONE: easy: login not required, only for saving data, and for admins
 9. DONE: easy: swith "the process" and "The people" in the triangle view (left/right sides)
 5. DONE: easy: User can pick ANY org - no need to add them in the admin
+
+#DEFER - Maybe Don't Need?
+7. DEFER: (we don't need this if we do #5 ) adding users to orgs BEFORE they have logged in the first time (eg invitations)
+9. Gap playlist per competency: the same for each career path: separate it out into a different interface
+10. what can we do to make the admin interface a bit easier to use?
+5. Login from admin-goes back to main page.
+
 
 
 # [PouchDB Express Server](https://pouchdb.com/) v2

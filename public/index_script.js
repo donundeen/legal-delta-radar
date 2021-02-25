@@ -163,7 +163,7 @@ function populateCareerPathSelect(user, org) {
     })[0];
     updateScoringDiv(user, org);
     updateRadar(user, org);
-    updateDelta(user, org);  
+    updateDelta(user, org);
     updateGapPlaylist(user, org);
     $(document).trigger("careerPathSelect");
     $("#collapseTwo").collapse("show");
@@ -208,7 +208,7 @@ function updateScoringDiv(user, org) {
 
     // iterate through all the competencies, skipping all that aren't selected
     group.competencies.forEach((competency, index) => {
-      if (!competency.selected) {
+      if (!competency.visibleForThisCareerPath) {
         console.log("competency not selected");
         return true;
       }
@@ -222,7 +222,9 @@ function updateScoringDiv(user, org) {
       } catch (ermsg) {
         console.log("error gettign user score for " + ermsg);
       }
-
+      if(!userScore){
+        userScore = defaultScoreValue; // this value set in schemas.js
+      }
       // there is SOME competencies selected
       active = true;
 
@@ -297,7 +299,7 @@ function updateDelta(user, org) {
       return b.label.length - a.label.length;
     });
     comps.forEach(competency => {
-      if (!competency.selected) {
+      if (!competency.visibleForThisCareerPath) {
         return true;
       }
 
@@ -346,8 +348,10 @@ function updateRadar(user, org) {
       } catch (ermsg) {
         console.log("error gettign user score for " + ermsg);
       }
-
-      if (competency.selected) {
+      if(!userScore){
+        userScore = defaultScoreValue; // this value set in schemas.js
+      }
+      if (competency.visibleForThisCareerPath) {
         scoredLabels.push({
           group: group.label,
           label: competency.label,
@@ -400,7 +404,7 @@ function updateGapPlaylist(user, org) {
     group.competencies.forEach(competency => {
       console.log(competency.label);
 
-      if (competency.selected && competency.hasGap) {
+      if (competency.visibleForThisCareerPath && competency.hasGap) {
         console.log(competency.label);
         competencyList.push(competency);
       }
@@ -429,11 +433,13 @@ function updateGapPlaylist(user, org) {
     $(".titlebutton", playlistCard).text(competency.label);
     let list = $("<ul class='list-group'></ul>").appendTo(body);
 
-    competency.playlist.forEach(playlistItem => {
-      let item = $("<li class='list-group-item'></li>")
-        .text(playlistItem)
-        .appendTo(list);
-    });
+    if (competency.playlist && typeof competency.playlist === 'object') {
+      competency.playlist.forEach(playlistItem => {
+        let item = $("<li class='list-group-item'></li>")
+          .text(playlistItem)
+          .appendTo(list);
+      });
+    }
   });
 }
 
