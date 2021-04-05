@@ -338,12 +338,14 @@ function updateRadar(user, org) {
   curCareerPath.groups.forEach(group => {
     group.competencies.forEach(competency => {
       console.log(competency);
+      competency.idealScore = parseFloat(competency.idealScore)
+      competency.myScore = parseFloat(competency.myScore)
 
       let userScore = competency.myScore;
       try {
         if (user.scores) {
           userScore =
-            user.scores[org._id][curCareerPath.label][competency.label];
+            parseFloat(user.scores[org._id][curCareerPath.label][competency.label]);
         }
       } catch (ermsg) {
         console.log("error gettign user score for " + ermsg);
@@ -363,8 +365,13 @@ function updateRadar(user, org) {
         if (userScore < competency.idealScore) {
           competency.hasGap = true;
           competency.gapSize = competency.idealScore - userScore;
+          console.log("YES GAP for " + competency.label);
+          console.log(competency);          
         } else {
           competency.hasGap = false;
+          console.log("no GAP for " + competency.label);
+          console.log(userScore);
+          console.log(competency);
         }
       }
     });
@@ -396,7 +403,7 @@ function updateRadar(user, org) {
 }
 
 function updateGapPlaylist(user, org) {
-  console.log("gapplaylsit");
+  console.log("gapplaylist");
   $("#gapAccordion").empty();
   let index = 0;
   let competencyList = [];
@@ -407,6 +414,9 @@ function updateGapPlaylist(user, org) {
       if (competency.visibleForThisCareerPath && competency.hasGap) {
         console.log(competency.label);
         competencyList.push(competency);
+      }else{
+        console.log("not adding to list");
+        console.log(competency);
       }
     });
   });
